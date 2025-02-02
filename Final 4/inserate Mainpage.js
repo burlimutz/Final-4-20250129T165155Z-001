@@ -1,12 +1,15 @@
-// Funktion zur Erstellung einer Buchkarte für die Mainpage (ohne Bild & Beschreibung)
-function createCard(title, price, year, condition, level) {
+// 🟢 Funktion für die minimalistische Buchkarte (Mainpage & Kategorie)
+function createCard(title, price, year, condition, level, description, image, subject) {
     return `
       <div class="col">
         <a href="Angebotansicht.html?title=${encodeURIComponent(title)}
         &price=${encodeURIComponent(price)}
         &year=${encodeURIComponent(year)}
         &condition=${encodeURIComponent(condition)}
-        &level=${encodeURIComponent(level)}" 
+        &level=${encodeURIComponent(level)}
+        &description=${encodeURIComponent(description || "Keine Beschreibung verfügbar")}
+        &image=${encodeURIComponent(image || "https://via.placeholder.com/250")}
+        &subject=${encodeURIComponent(subject || "Schulfach nicht angegeben")}" 
         class="text-decoration-none">
           <div class="card">
             <div class="card-body">
@@ -23,79 +26,109 @@ function createCard(title, price, year, condition, level) {
     `;
 }
 
-// Funktion zur Erstellung einer Buchkarte für die Angebotsansicht (mit Bild & Beschreibung)
+// 🔵 Funktion für die detaillierte Buchkarte (Angebotsansicht)
 function createCardForDetails(title, price, year, condition, level, description, image, subject) {
     return `
       <div class="col">
-        <a href="Angebotansicht.html?title=${encodeURIComponent(title)}
-        &price=${encodeURIComponent(price)}
-        &year=${encodeURIComponent(year)}
-        &condition=${encodeURIComponent(condition)}
-        &level=${encodeURIComponent(level)}
-        &description=${encodeURIComponent(description || "Keine Beschreibung verfügbar")}
-        &image=${encodeURIComponent(image || "https://via.placeholder.com/250")}
-        &subject=${encodeURIComponent(subject || "Schulfach nicht angegeben")}" 
-        class="text-decoration-none">
-          <div class="card">
-            <img src="${image || "https://via.placeholder.com/250"}" class="card-img-top" alt="Buchbild"/>
-            <div class="card-body">
-              <h5 class="card-title mt-3">${title}</h5>
-              <p class="card-text">Preis: ${price} CHF</p>
-              <p class="card-text">Erscheinungsjahr: ${year}</p>
-              <p class="card-text">Zustand: ${condition}</p>
-              <p class="card-text">Niveau: ${level}</p>
-              <p class="card-text"><strong>Schulfach:</strong> ${subject || "Schulfach nicht angegeben"}</p>
-              <p class="card-text"><strong>Beschreibung:</strong> ${description || "Keine Beschreibung verfügbar"}</p>
-            </div>
+        <div class="card">
+          <img src="${image || "https://via.placeholder.com/250"}" class="card-img-top" alt="Buchbild"/>
+          <div class="card-body">
+            <h5 class="card-title mt-3">${title}</h5>
+            <p class="card-text">Preis: ${price} CHF</p>
+            <p class="card-text">Erscheinungsjahr: ${year}</p>
+            <p class="card-text">Zustand: ${condition}</p>
+            <p class="card-text">Niveau: ${level}</p>
+            <p class="card-text"><strong>Schulfach:</strong> ${subject || "Schulfach nicht angegeben"}</p>
+            <p class="card-text"><strong>Beschreibung:</strong> ${description || "Keine Beschreibung verfügbar"}</p>
           </div>
-        </a>
+        </div>
       </div>
     `;
 }
-// Funktion für die Mainpage (nur Basisinfos)
+
+// 🟢 Funktion zur Anzeige der Mainpage-Bücher (übersichtliche Karten)
 function populateSection(sectionId, books) {
-    console.log(`🚀 populateSection() für ${sectionId} gestartet.`);
     const section = document.getElementById(sectionId);
-    if (!section) {
-        console.error(`⚠️ Fehler: Sektion ${sectionId} nicht gefunden.`);
-        return;
-    }
+    if (!section) return;
     section.innerHTML = "";
     books.forEach((book) => {
-        console.log(`✅ Buch geladen: ${book.title}`);
         section.innerHTML += createCard(
-            book.title,
-            book.price,
-            book.year,
-            book.condition,
-            book.level
+            book.title, book.price, book.year, book.condition, book.level,
+            book.description, book.image, book.subject
         );
     });
 }
 
-// Funktion für die Angebotsansicht (alle Infos)
-function populateSectionForDetails(sectionId, books) {
-    console.log(`🚀 populateSectionForDetails() für ${sectionId} gestartet.`);
-    const section = document.getElementById(sectionId);
-    if (!section) {
-        console.error(`⚠️ Fehler: Sektion ${sectionId} nicht gefunden.`);
+// 🟢 Funktion zur Anzeige der Kategorieseite (nutzt `createCard()`)
+function populateCategoryBooks(category) {
+    const categories = {
+        Mathematik: mathBooks,
+        Deutsch: germanBooks,
+        Englisch: englishBooks,
+        Französisch: frenchBooks,
+        Wirtschaft: economicsBooks,
+        Geografie: geographyBooks,
+        Geschichte: historyBooks,
+        Recht: lawBooks
+    };
+
+    const categoryBooks = categories[category];
+    if (!categoryBooks) {
+        document.getElementById("category-section").innerHTML = "Keine Kategorie gefunden";
         return;
     }
+
+    const section = document.getElementById("category-section");
     section.innerHTML = "";
-    books.forEach((book) => {
-        console.log(`✅ Buch geladen: ${book.title}`);
-        section.innerHTML += createCardForDetails(
-            book.title,
-            book.price,
-            book.year,
-            book.condition,
-            book.level,
-            book.description || "Keine Beschreibung verfügbar",
-            book.image || "https://via.placeholder.com/250",
-            book.subject || "Unbekanntes Fach"
+    categoryBooks.forEach((book) => {
+        section.innerHTML += createCard(
+            book.title, book.price, book.year, book.condition, book.level,
+            book.description, book.image, book.subject
         );
     });
 }
+
+// 🔵 Angebotsansicht (Details aus URL holen & `createCardForDetails()` nutzen)
+function loadBookDetails() {
+    function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.has(name) ? decodeURIComponent(urlParams.get(name)) : "Nicht verfügbar";
+    }
+
+    const title = getUrlParameter("title");
+    const price = getUrlParameter("price");
+    const year = getUrlParameter("year");
+    const condition = getUrlParameter("condition");
+    const level = getUrlParameter("level");
+    const description = getUrlParameter("description");
+    const image = getUrlParameter("image");
+    const subject = getUrlParameter("subject");
+
+    document.getElementById("book-details").innerHTML = createCardForDetails(
+        title, price, year, condition, level, description, image, subject
+    );
+}
+
+// 🔥 ERKENNEN, WELCHE SEITE GELADEN WIRD
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get("category");
+
+    if (window.location.pathname.includes("kategorie.html")) {
+        populateCategoryBooks(category);
+    } else if (window.location.pathname.includes("Angebotansicht.html")) {
+        loadBookDetails();
+    } else {
+        populateSection("math-section", mathBooks);
+        populateSection("german-section", germanBooks);
+        populateSection("english-section", englishBooks);
+        populateSection("french-section", frenchBooks);
+        populateSection("economics-section", economicsBooks);
+        populateSection("geography-section", geographyBooks);
+        populateSection("history-section", historyBooks);
+        populateSection("law-section", lawBooks);
+    }
+});
 // Books data for all categories
 const mathBooks = [
     { title: "Math Book 1", price: 20, year: 2015, condition: "Wie neu", level: "Realschule", description :"SADDDDASDsSjidhuiajsdiojsadjiooasdjiosadijosadoijsadsaoijkda", image: "https://via.placeholder.com/250", subject: "Mathematik"  },
@@ -161,23 +194,4 @@ const lawBooks = [
     { title: "Law Book 5", price: 18, year: 2019, condition: "Wie neu", level: "Universität", description :"SADDDDASDsSjidhuiajsdiojsadjiooasdjiosadijosadoijsadsaoijkda" , image: "https://via.placeholder.com/250", subject: "Recht"},
 ];
 
-// Populate sections when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-    populateSection("math-section", mathBooks);
-    populateSectionForDetails("math-details", mathBooks);
-    populateSection("german-section", germanBooks);
-    populateSectionForDetails("german-details", germanBooks);
-    populateSection("english-section", englishBooks);
-    populateSectionForDetails("english-details", englishBooks);
-    populateSection("french-section", frenchBooks);
-    populateSectionForDetails("french-details", frenchBooks);
-    populateSection("economics-section", economicsBooks);
-    populateSectionForDetails("economics-details", economicsBooks);
-    populateSection("geography-section", geographyBooks);
-    populateSectionForDetails("geography-details", geographyBooks);
-    populateSection("history-section", historyBooks);
-    populateSectionForDetails("history-details", historyBooks);
-    populateSection("law-section", lawBooks);
-    populateSectionForDetails("law-details", lawBooks);
-});
 
