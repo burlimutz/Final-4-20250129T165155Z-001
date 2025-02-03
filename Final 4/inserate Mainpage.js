@@ -1,4 +1,4 @@
-// 🟢 Funktion für die minimalistische Buchkarte (Mainpage & Kategorie)
+//  Funktion für die minimalistische Buchkarte (Mainpage & Kategorie)
 function createCard(title, price, year, condition, level, description, image, subject) {
     return `
       <div class="col">
@@ -26,7 +26,7 @@ function createCard(title, price, year, condition, level, description, image, su
     `;
 }
 
-// 🔵 Funktion für die detaillierte Buchkarte (Angebotsansicht)
+//  Funktion für die detaillierte Buchkarte (Angebotsansicht)
 function createCardForDetails(title, price, year, condition, level, description, image, subject) {
     return `
       <div class="col">
@@ -46,7 +46,7 @@ function createCardForDetails(title, price, year, condition, level, description,
     `;
 }
 
-// 🟢 Funktion zur Anzeige der Mainpage-Bücher (übersichtliche Karten)
+//  Funktion zur Anzeige der Mainpage-Bücher (übersichtliche Karten)
 function populateSection(sectionId, books) {
     const section = document.getElementById(sectionId);
     if (!section) return;
@@ -59,7 +59,7 @@ function populateSection(sectionId, books) {
     });
 }
 
-// 🟢 Funktion zur Anzeige der Kategorieseite (nutzt `createCard()`)
+//  Funktion zur Anzeige der Kategorieseite (nutzt `createCard()`)
 function populateCategoryBooks(category) {
     const categories = {
         Mathematik: mathBooks,
@@ -88,7 +88,7 @@ function populateCategoryBooks(category) {
     });
 }
 
-// 🔵 Angebotsansicht (Details aus URL holen & `createCardForDetails()` nutzen)
+//  Angebotsansicht (Details aus URL holen & `createCardForDetails()` nutzen)
 function loadBookDetails() {
     function getUrlParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -109,7 +109,7 @@ function loadBookDetails() {
     );
 }
 
-// 🔥 ERKENNEN, WELCHE SEITE GELADEN WIRD
+//  ERKENNEN, WELCHE SEITE GELADEN WIRD
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get("category");
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
         populateSection("law-section", lawBooks);
     }
 });
-// Books data for all categories
+// Books data
 const mathBooks = [
     { title: "Math Book 1", price: 20, year: 2015, condition: "Wie neu", level: "Realschule", description :"SADDDDASDsSjidhuiajsdiojsadjiooasdjiosadijosadoijsadsaoijkda", image: "https://via.placeholder.com/250", subject: "Mathematik"  },
     { title: "Math Book 2", price: 25, year: 2018, condition: "Guter Zustand", level: "Sekundarschule", description :"SADDDDASDsSjidhuiajsdiojsadjiooasdjiosadijosadoijsadsaoijkda" , image: "https://via.placeholder.com/250", subject: "Mathematik"  },

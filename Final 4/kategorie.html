@@ -20,7 +20,7 @@
         <div class="container">
             <!-- Logo -->
             <a class="navbar-brand" href="#">
-                <img src="logo-transparent-svg.svg" alt="BookSwap Logo" height="50"> <!-- Replace with your SVG logo -->
+                <img src="logo-transparent-svg.svg" alt="BookSwap Logo" height="50"> 
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -102,7 +102,7 @@
       <div class="row row-cols-1 row-cols-md-5 g-4" id="category-section"></div>
     </div>
 
-    <!--Offcanvas-->
+    <!--Offcanvas sidebar mit suchparameter-->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebar-label">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="sidebar-label">Erweiterte Suchfunktionen </h5>
@@ -141,7 +141,7 @@
                     </select>
                 </div>
 
-                <!-- Zustand des Buches Radio Buttons -->
+                <!-- Zustand des Buches -->
                 <div class="mb-3">
                     <label class="form-label">Zustand des Buches</label>
                     <div class="form-check">
@@ -221,8 +221,8 @@ function createCard(title, price, year, condition, level) {
       </div>
     `;
   }
-      // Function to populate books based on the selected category
-      // Funktion zum Anzeigen der Bücher basierend auf der Kategorie
+      
+      // Funktion zum Anzeigen der Bücher basierend auf der Kategorie, genau gleiche daten wie bei inserate Mainpage.js
 function populateCategoryBooks(category) {
     const categories = {
         Mathematik: [
