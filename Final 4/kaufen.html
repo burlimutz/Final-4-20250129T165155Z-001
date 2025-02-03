@@ -44,6 +44,8 @@
             <div class="card-body text-center">
                 <h5 class="card-title">Verkäufer kontaktieren</h5>
                 <p><strong>Kontakt-E-Mail:</strong> <a id="seller-email" href="#">Lade...</a></p>
+                <div id="listing-info">
+         
             </div>
         </div>
 
@@ -59,19 +61,16 @@
     </div>
 
     <script>
-  
-
-        // Inserat entfernen (Simuliert das Entfernen)
+        // Inserat entfernen (Entfernt nur Infos, nicht die E-Mail)
         document.getElementById("remove-listing").addEventListener("click", function() {
             if (confirm("Möchtest du dieses Inserat wirklich entfernen?")) {
                 alert("Das Inserat wurde entfernt. Bitte kontaktiere den Verkäufer nun per E-Mail.");
-                document.querySelector(".card").remove();
-                this.remove(); // Button selbst entfernen
+
+                // 🛑 Entferne nur die Inserat-Infos, nicht die ganze Card!
+                document.getElementById("listing-info").remove();
+                this.remove(); // Entfernt den Button selbst
             }
         });
-
-        // Lade die E-Mail beim Seitenaufruf
-        document.addEventListener("DOMContentLoaded", loadListingDetails);
     </script>
 
 </body>
