@@ -193,5 +193,3 @@ const lawBooks = [
     { title: "Law Book 4", price: 25, year: 2021, condition: "Stark gebraucht", level: "Hochschule", description :"SADDDDASDsSjidhuiajsdiojsadjiooasdjiosadijosadoijsadsaoijkda", image: "https://via.placeholder.com/250", subject: "Recht"  },
     { title: "Law Book 5", price: 18, year: 2019, condition: "Wie neu", level: "Universität", description :"SADDDDASDsSjidhuiajsdiojsadjiooasdjiosadijosadoijsadsaoijkda" , image: "https://via.placeholder.com/250", subject: "Recht"},
 ];
-
-
