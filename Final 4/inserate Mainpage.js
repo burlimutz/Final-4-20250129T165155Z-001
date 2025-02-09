@@ -193,3 +193,39 @@ const lawBooks = [
     { title: "Law Book 4", price: 25, year: 2021, condition: "Stark gebraucht", level: "Hochschule", description :"SADDDDASDsSjidhuiajsdiojsadjiooasdjiosadijosadoijsadsaoijkda", image: "https://via.placeholder.com/250", subject: "Recht"  },
     { title: "Law Book 5", price: 18, year: 2019, condition: "Wie neu", level: "Universität", description :"SADDDDASDsSjidhuiajsdiojsadjiooasdjiosadijosadoijsadsaoijkda" , image: "https://via.placeholder.com/250", subject: "Recht"},
 ];
+
+function filterBooks() {
+    // 1. Suchparameter erfassen
+    const selectedSubject = document.getElementById("subject").value;
+    const selectedYear = document.getElementById("year").value;
+    const selectedCondition = document.querySelector('input[name="bookCondition"]:checked')?.value || "";
+    const selectedLevel = document.getElementById("level").value;
+    const selectedPrice = document.getElementById("price").value;
+
+    // 2. Alle Bücher in einer Liste sammeln
+    const allBooks = [...mathBooks, ...germanBooks, ...englishBooks, ...frenchBooks];
+
+    // 3. Bücher nach den ausgewählten Kriterien filtern
+    const filteredBooks = allBooks.filter(book => {
+        return (
+            (selectedSubject === "" || book.subject === selectedSubject) &&
+            (selectedYear === "" || book.year.toString() === selectedYear) &&
+            (selectedCondition === "" || book.condition === selectedCondition) &&
+            (selectedLevel === "" || book.level === selectedLevel) &&
+            filterPrice(book.price, selectedPrice)
+        );
+    });
+
+    // 4. Ergebnisse anzeigen
+    populateSection("filtered-section", filteredBooks);
+}
+
+// Hilfsfunktion zur Preisfilterung
+function filterPrice(bookPrice, selectedPrice) {
+    if (selectedPrice === "") return true;
+    if (selectedPrice === "0-5") return bookPrice < 5;
+    if (selectedPrice === "100+") return bookPrice > 100;
+    
+    const [min, max] = selectedPrice.split("-").map(Number);
+    return bookPrice >= min && bookPrice <= max;
+}
